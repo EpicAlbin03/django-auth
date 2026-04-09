@@ -1,0 +1,18 @@
+{# Session 6 — Login Template #}
+{# Copy this to core/templates/login.html #}
+
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<h1>Login</h1>
+
+{% if error %}
+<p style="color: red;">{{ error }}</p>
+{% endif %}
+
+{# TODO: create a form with method="POST" #}
+{# Include {% csrf_token %} #}
+{# Add username and password inputs #}
+{# Add a submit button #}
+
+{% endblock %}
