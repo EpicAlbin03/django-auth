@@ -19,6 +19,7 @@ dependencies = [
 dev = "python manage.py runserver"
 migrate = "python manage.py migrate"
 makemigrations = "python manage.py makemigrations"
+superuser = "python manage.py createsuperuser"
 lint = "ruff check ."
 format = "ruff format ."
 
