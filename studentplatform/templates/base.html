@@ -30,9 +30,11 @@
                 Courses
               </c-navigation-menu.link>
             </c-navigation-menu.item>
+            {% if user.is_staff %}
             <c-navigation-menu.item>
               <c-navigation-menu.link href="/admin">Admin</c-navigation-menu.link>
             </c-navigation-menu.item>
+            {% endif %}
             <c-navigation-menu.item>
               <c-navigation-menu.link href="{% url 'logout' %}">Logout</c-navigation-menu.link>
             </c-navigation-menu.item>
@@ -46,14 +48,14 @@
             {% endif %}
           </c-navigation-menu.list>
         </c-navigation-menu>
+        {% if user.is_authenticated %}
         <div class="ml-auto">
           <c-badge variant="secondary">
             {{ students_count }} Student{{ students_count|pluralize }}
           </c-badge>
-          {% if user.is_authenticated %}
           <c-badge> Hi, {{ user.username }}! </c-badge>
-          {% endif %}
         </div>
+        {% endif %}
       </div>
     </header>
 

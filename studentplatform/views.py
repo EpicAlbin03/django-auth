@@ -1,3 +1,4 @@
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm, UserCreationForm
@@ -116,7 +117,7 @@ def student_detail(request: HttpRequest, student_id: int):
     return render(request, 'student_detail.html', {'student': student})
 
 
-@login_required
+@staff_member_required
 def add_student(request: HttpRequest):
     """Show a form (GET) or process the submission (POST)."""
     if request.method == 'POST':
@@ -130,7 +131,7 @@ def add_student(request: HttpRequest):
     return render(request, 'add_student.html', {'form': form})
 
 
-@login_required
+@staff_member_required
 def delete_student(request: HttpRequest, student_id: int):
     """Delete a student and redirect to the list."""
     student = get_object_or_404(Student, id=student_id)
@@ -139,7 +140,7 @@ def delete_student(request: HttpRequest, student_id: int):
     return redirect('student_list')
 
 
-@login_required
+@staff_member_required
 def edit_student(request: HttpRequest, student_id: int):
     """Show a form pre-filled with existing data (GET) or process the submission (POST)."""
     student = get_object_or_404(Student, id=student_id)

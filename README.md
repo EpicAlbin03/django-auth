@@ -227,7 +227,7 @@ CORS_ALLOWED_ORIGINS = [
 - [x] **Registration page** — create a signup view that creates new users with `User.objects.create_user()` (I used UserCreationForm)
 - [x] **Password change** — add a page where logged-in users can change their password
 - [ ] **User-specific data** — only show students created by the logged-in user
-- [ ] **Role-based access** — admin users can delete, regular users can only view
+- [x] **Role-based access** — admin users can delete, regular users can only view
 
 ---
 
