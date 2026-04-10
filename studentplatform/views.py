@@ -1,26 +1,41 @@
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm, UserCreationForm
 from django.db.models import Q
 from django.http import HttpRequest
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, redirect, render, resolve_url
+from django.utils.http import url_has_allowed_host_and_scheme
 
 from .forms import StudentForm
 from .models import Course, Student
 
 
+def _get_safe_redirect_url(request: HttpRequest) -> str:
+    """Get a safe URL to redirect to after login."""
+    redirect_to = request.POST.get('next') or request.GET.get('next')
+    if redirect_to and url_has_allowed_host_and_scheme(
+        url=redirect_to,
+        allowed_hosts={request.get_host()},
+        require_https=request.is_secure(),
+    ):
+        return redirect_to
+    return resolve_url('student_list')
+
+
 def login_view(request: HttpRequest):
     """Login page"""
+    if request.user.is_authenticated:
+        return redirect('student_list')
+
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('student_list')
-        else:
-            return render(request, 'account/login.html', {'error': 'Invalid credentials'})
-    return render(request, 'account/login.html')
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            login(request, form.get_user())
+            return redirect(_get_safe_redirect_url(request))
+    else:
+        form = AuthenticationForm(request)
+
+    return render(request, 'account/login.html', {'form': form, 'next': request.GET.get('next', '')})
 
 
 @login_required
@@ -32,12 +47,34 @@ def logout_view(request: HttpRequest):
 
 def signup_view(request: HttpRequest):
     """Signup page"""
-    return render(request, 'account/signup.html')
+    if request.user.is_authenticated:
+        return redirect('student_list')
+
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('student_list')
+    else:
+        form = UserCreationForm()
+
+    return render(request, 'account/signup.html', {'form': form})
 
 
+@login_required
 def password_change_view(request: HttpRequest):
     """Change password page"""
-    return render(request, 'account/password_change.html')
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            return redirect('student_list')
+    else:
+        form = PasswordChangeForm(request.user)
+
+    return render(request, 'account/password_change.html', {'form': form})
 
 
 def home(request: HttpRequest):

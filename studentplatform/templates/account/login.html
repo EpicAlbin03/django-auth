@@ -24,21 +24,21 @@
                 {% endif %}
 
                 <div class='space-y-2'>
-                    <c-label for="{{ form.login.id_for_label }}">
-                        {{ form.login.label }}
+                    <c-label for="{{ form.username.id_for_label }}">
+                        {{ form.username.label }}
                     </c-label>
                     <c-input
-                        type="{{ form.login.field.widget.input_type }}"
-                        name="{{ form.login.name }}"
-                        id="{{ form.login.id_for_label }}"
-                        placeholder="Enter your email"
-                        value="{{ form.login.value|default:'' }}"
-                        {{ form.login.field.required|yesno:'required,' }}
-                        class="{{ form.login.errors|yesno:'border-destructive,' }}"
+                        type="text"
+                        name="{{ form.username.name }}"
+                        id="{{ form.username.id_for_label }}"
+                        placeholder="Enter your username"
+                        value="{{ form.username.value|default:'' }}"
+                        {{ form.username.field.required|yesno:'required,' }}
+                        class="{{ form.username.errors|yesno:'border-destructive,' }}"
                     />
-                    {% if form.login.errors %}
+                    {% if form.username.errors %}
                         <div class="text-destructive text-xs">
-                            {{ form.login.errors }}
+                            {{ form.username.errors }}
                         </div>
                     {% endif %}
                 </div>
@@ -62,17 +62,8 @@
                     {% endif %}
                 </div>
 
-                {% if form.remember %}
-                    <div class="flex items-center space-x-2">
-                        <c-checkbox
-                            name="{{ form.remember.name }}"
-                            id="{{ form.remember.id_for_label }}"
-                            {{ form.remember.value|yesno:'checked,' }}
-                        />
-                        <c-label for="{{ form.remember.id_for_label }}" class="text-sm font-normal">
-                            {{ form.remember.label }}
-                        </c-label>
-                    </div>
+                {% if next %}
+                    <input type="hidden" name="next" value="{{ next }}">
                 {% endif %}
             </c-card.content>
 

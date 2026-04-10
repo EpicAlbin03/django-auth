@@ -23,49 +23,25 @@
                     </c-alert>
                 {% endif %}
 
-                {% if form.email %}
-                    <div class='space-y-2'>
-                        <c-label for="{{ form.email.id_for_label }}">
-                            {{ form.email.label }}
-                        </c-label>
-                        <c-input
-                            type="email"
-                            name="{{ form.email.name }}"
-                            id="{{ form.email.id_for_label }}"
-                            placeholder="Enter your email"
-                            value="{{ form.email.value|default:'' }}"
-                            {{ form.email.field.required|yesno:'required,' }}
-                            class="{{ form.email.errors|yesno:'border-destructive,' }}"
-                        />
-                        {% if form.email.errors %}
-                            <div class="text-destructive text-xs">
-                                {{ form.email.errors }}
-                            </div>
-                        {% endif %}
-                    </div>
-                {% endif %}
-
-                {% if form.username %}
-                    <div class='space-y-2'>
-                        <c-label for="{{ form.username.id_for_label }}">
-                            {{ form.username.label }}
-                        </c-label>
-                        <c-input
-                            type="text"
-                            name="{{ form.username.name }}"
-                            id="{{ form.username.id_for_label }}"
-                            placeholder="Choose a username"
-                            value="{{ form.username.value|default:'' }}"
-                            {{ form.username.field.required|yesno:'required,' }}
-                            class="{{ form.username.errors|yesno:'border-destructive,' }}"
-                        />
-                        {% if form.username.errors %}
-                            <div class="text-destructive text-xs">
-                                {{ form.username.errors }}
-                            </div>
-                        {% endif %}
-                    </div>
-                {% endif %}
+                <div class='space-y-2'>
+                    <c-label for="{{ form.username.id_for_label }}">
+                        {{ form.username.label }}
+                    </c-label>
+                    <c-input
+                        type="text"
+                        name="{{ form.username.name }}"
+                        id="{{ form.username.id_for_label }}"
+                        placeholder="Choose a username"
+                        value="{{ form.username.value|default:'' }}"
+                        {{ form.username.field.required|yesno:'required,' }}
+                        class="{{ form.username.errors|yesno:'border-destructive,' }}"
+                    />
+                    {% if form.username.errors %}
+                        <div class="text-destructive text-xs">
+                            {{ form.username.errors }}
+                        </div>
+                    {% endif %}
+                </div>
 
                 <div class='space-y-2'>
                     <c-label for="{{ form.password1.id_for_label }}">
