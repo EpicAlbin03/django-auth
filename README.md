@@ -233,6 +233,8 @@ CORS_ALLOWED_ORIGINS = [
 
 ## When You're Done
 
+See dependencies in `pyproject.toml`.
+
 ```bash
 pip freeze > requirements.txt
 git add .
