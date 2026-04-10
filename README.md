@@ -218,7 +218,7 @@ CORS_ALLOWED_ORIGINS = [
 - [x] API returns 401 without token
 - [x] API returns 200 with valid token
 - [x] CORS configured
-- [ ] .env and .gitignore created
+- [x] .env and .gitignore created
 
 ---
 

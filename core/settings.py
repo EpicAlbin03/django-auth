@@ -10,7 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
+
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,13 +22,27 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-^vubm4)c8b5_5pt6o0ocyfs-wqfs90vlx=zmim68g5%hszy&xk'
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', 'True').lower() in ('true', '1', 'yes')
 
-ALLOWED_HOSTS = []
+# SECURITY WARNING: keep the secret key used in production secret!
+if DEBUG:
+    SECRET_KEY = os.environ.get(
+        'DJANGO_SECRET_KEY',
+        'django-insecure-^vubm4)c8b5_5pt6o0ocyfs-wqfs90vlx=zmim68g5%hszy&xk',
+    )
+else:
+    SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+    if not SECRET_KEY:
+        raise ImproperlyConfigured('Missing DJANGO_SECRET_KEY')
+
+# ALLOWED_HOSTS:
+if DEBUG:
+    ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '*').split(',')
+else:
+    ALLOWED_HOSTS = [h.strip() for h in os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',') if h.strip()]
+    if not ALLOWED_HOSTS:
+        raise ImproperlyConfigured('Missing DJANGO_ALLOWED_HOSTS')
 
 
 # Application definition
@@ -134,4 +151,4 @@ REST_FRAMEWORK = {
 }
 
 # CORS
-CORS_ALLOWED_ORIGINS = ['http://localhost:5173']
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:5173,http://127.0.0.1:5173').split(',')
