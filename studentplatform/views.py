@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404, redirect, render
@@ -18,8 +19,8 @@ def login_view(request: HttpRequest):
             login(request, user)
             return redirect('student_list')
         else:
-            return render(request, 'login.html', {'error': 'Invalid credentials'})
-    return render(request, 'login.html')
+            return render(request, 'account/login.html', {'error': 'Invalid credentials'})
+    return render(request, 'account/login.html')
 
 
 @login_required
@@ -27,6 +28,16 @@ def logout_view(request: HttpRequest):
     """Logout view"""
     logout(request)
     return redirect('home')
+
+
+def signup_view(request: HttpRequest):
+    """Signup page"""
+    return render(request, 'account/signup.html')
+
+
+def password_change_view(request: HttpRequest):
+    """Change password page"""
+    return render(request, 'account/password_change.html')
 
 
 def home(request: HttpRequest):

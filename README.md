@@ -8,12 +8,12 @@ Add **authentication and security** to your student platform. By the end, the we
 
 ## What Changes From Yesterday
 
-| Yesterday (Phase 3) | Today (Phase 4) |
-|---|---|
-| All pages accessible without login | Protected pages require login |
-| API open to anyone | API requires JWT token |
-| No login/logout pages | Full login/logout flow |
-| No security configuration | CORS, env variables, .gitignore |
+| Yesterday (Phase 3)                | Today (Phase 4)                 |
+| ---------------------------------- | ------------------------------- |
+| All pages accessible without login | Protected pages require login   |
+| API open to anyone                 | API requires JWT token          |
+| No login/logout pages              | Full login/logout flow          |
+| No security configuration          | CORS, env variables, .gitignore |
 
 ---
 
@@ -37,6 +37,7 @@ from django.contrib.auth.decorators import login_required
 ```
 
 **login_view:**
+
 - If the request is GET → render `login.html`
 - If the request is POST → get `username` and `password` from `request.POST`
 - Use `authenticate(request, username=..., password=...)` to check credentials
@@ -44,11 +45,13 @@ from django.contrib.auth.decorators import login_required
 - If invalid → render `login.html` again with an error message in the context
 
 **logout_view:**
+
 - Call `logout(request)` and redirect to `home`
 
 ### 1.2 Create the login template
 
 Create `core/templates/login.html`. It should:
+
 - Extend `base.html`
 - Show `{{ error }}` if present (for invalid credentials)
 - Have a `<form method="POST">` with `{% csrf_token %}`
@@ -125,6 +128,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 ```
 
 Add two paths:
+
 - `token/` → `TokenObtainPairView` (this is where clients POST username/password to get tokens)
 - `token/refresh/` → `TokenRefreshView` (this is where clients POST a refresh token to get a new access token)
 
@@ -150,18 +154,21 @@ Do this for all your API view classes.
 ### 2.4 Test the API auth
 
 **Without a token (should fail):**
+
 ```bash
 curl.exe http://127.0.0.1:8000/api/students/
 # Expected: 401 Unauthorized
 ```
 
 **Get a token:**
+
 ```bash
 curl.exe -X POST http://127.0.0.1:8000/api/token/ -H "Content-Type: application/json" --data-raw "{""username"":""yourusername"",""password"":""yourpassword""}"
 # Returns: {"access": "eyJ...", "refresh": "eyJ..."}
 ```
 
 **Use the token (should work):**
+
 ```bash
 curl.exe http://127.0.0.1:8000/api/students/ -H "Authorization: Bearer YOUR_ACCESS_TOKEN_HERE"
 # Expected: 200 OK with student data
@@ -200,17 +207,17 @@ CORS_ALLOWED_ORIGINS = [
 
 ## Checklist
 
-- [ ] Login view and template working
-- [ ] Logout view working
-- [ ] Navigation changes based on auth status
-- [ ] @login_required on all protected views
-- [ ] Public pages (home, about) still accessible without login
-- [ ] JWT configured in settings.py
-- [ ] Token endpoints added (/api/token/ and /api/token/refresh/)
-- [ ] IsAuthenticated on all API views
-- [ ] API returns 401 without token
-- [ ] API returns 200 with valid token
-- [ ] CORS configured
+- [x] Login view and template working
+- [x] Logout view working
+- [x] Navigation changes based on auth status
+- [x] @login_required on all protected views
+- [x] Public pages (home, about) still accessible without login
+- [x] JWT configured in settings.py
+- [x] Token endpoints added (/api/token/ and /api/token/refresh/)
+- [x] IsAuthenticated on all API views
+- [x] API returns 401 without token
+- [x] API returns 200 with valid token
+- [x] CORS configured
 - [ ] .env and .gitignore created
 
 ---

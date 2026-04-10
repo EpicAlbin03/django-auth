@@ -1,19 +1,18 @@
 {% extends "base.html" %}
-{% load i18n %}
 
-{% block title %}{% trans "Sign Up" %}{% endblock %}
+{% block title %}Sign Up{% endblock %}
 
 {% block content %}
 <div class="min-h-screen flex items-center justify-center bg-background">
     <c-card class='w-[400px]'>
         <c-card.header>
-            <c-card.title>{% trans "Sign Up" %}</c-card.title>
+            <c-card.title>Sign Up</c-card.title>
             <c-card.description>
-                {% trans "Create your account to get started." %}
+                Create your account to get started.
             </c-card.description>
         </c-card.header>
 
-        <form method="POST" action="{% url 'account_signup' %}">
+        <form method="POST" action="{% url 'signup' %}">
             {% csrf_token %}
             <c-card.content class='space-y-4'>
                 {% if form.non_field_errors %}
@@ -109,13 +108,13 @@
 
             <c-card.footer class='flex flex-col space-y-3'>
                 <c-button type="submit" class="w-full">
-                    {% trans "Sign Up" %}
+                    Sign Up
                 </c-button>
 
                 <div class="text-center text-sm text-muted-foreground">
-                    {% trans "Already have an account?" %}
-                    <a href="{% url 'account_login' %}" class="text-primary hover:underline">
-                        {% trans "Sign in" %}
+                    Already have an account?
+                    <a href="{% url 'login' %}" class="text-primary hover:underline">
+                        Sign in
                     </a>
                 </div>
             </c-card.footer>

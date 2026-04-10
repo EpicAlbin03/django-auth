@@ -1,29 +1,20 @@
-{% extends "base.html" %}
-{% load i18n %}
-
-{% block title %}{% trans "Sign Out" %}{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% block title %}Sign Out{% endblock %} {% block content %}
 <div class="min-h-screen flex items-center justify-center bg-background">
-    <c-card class='w-[400px]'>
-        <c-card.header>
-            <c-card.title>{% trans "Sign Out" %}</c-card.title>
-            <c-card.description>
-                {% trans "Are you sure you want to sign out?" %}
-            </c-card.description>
-        </c-card.header>
+  <c-card class="w-[400px]">
+    <c-card.header>
+      <c-card.title>Sign Out</c-card.title>
+      <c-card.description> Are you sure you want to sign out? </c-card.description>
+    </c-card.header>
 
-        <form method="POST" action="{% url 'account_logout' %}">
-            {% csrf_token %}
-            <c-card.footer class='flex justify-between pt-6'>
-                <c-button variant='outline' type="button" onclick="window.history.back()">
-                    {% trans "Cancel" %}
-                </c-button>
-                <c-button type="submit">
-                    {% trans "Sign Out" %}
-                </c-button>
-            </c-card.footer>
-        </form>
-    </c-card>
+    <form method="POST" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <c-card.footer class="flex justify-between pt-6">
+        <c-button variant="outline" type="button" onclick="window.history.back()">
+          Cancel
+        </c-button>
+        <c-button type="submit"> Sign Out </c-button>
+      </c-card.footer>
+    </form>
+  </c-card>
 </div>
 {% endblock %}
