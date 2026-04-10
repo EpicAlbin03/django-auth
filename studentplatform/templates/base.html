@@ -50,6 +50,9 @@
           <c-badge variant="secondary">
             {{ students_count }} Student{{ students_count|pluralize }}
           </c-badge>
+          {% if user.is_authenticated %}
+          <c-badge> Hi, {{ user.username }}! </c-badge>
+          {% endif %}
         </div>
       </div>
     </header>
